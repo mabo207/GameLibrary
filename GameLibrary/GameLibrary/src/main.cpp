@@ -3,6 +3,7 @@
 #include"DxLib.h"
 
 #include"Geometry/Vector2.h"
+#include"Geometry/Circle.h"
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 	try{
@@ -42,17 +43,31 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 		Geometry::Vector2Int vi1(1,3),vi2(32,53);
 		double d=vi1.Size();
 		auto v=Geometry::ConvertToVector2(vi2);
-
+		const size_t circleCount=5;
+		const Geometry::Circle c[circleCount]={
+			Geometry::Circle(Geometry::Vector2(30.0f,30.0f),20.0f)
+			,Geometry::Circle(Geometry::Vector2(49.0f,30.0f),20.0f)
+			,Geometry::Circle(Geometry::Vector2(35.0f,65.0f),20.0f)
+			,Geometry::Circle(Geometry::Vector2(120.0f,200.0f),100.0f)
+			,Geometry::Circle(Geometry::Vector2(950.0f,300.0f),600.0f)
+		};
 		//ゲーム本体
 		while(ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
 			//入力情報更新
 
 			//描画
 			clsDx();
-			DrawBox(40,40,120,120,GetColor(127,127,127),TRUE);
+			for(const Geometry::Circle &circle:c){
+				circle.Shape::Draw(GetColor(255,0,0),FALSE,3.0f);
+			}
 
 			//情報更新
-
+			for(size_t i=0;i+1<circleCount;i++){
+				for(size_t j=i+1;j<circleCount;j++){
+					Geometry::Vector2 feedback=c[i].CalculateFeedback(&c[j],Geometry::Vector2(1.0f,0.0f));
+					printfDx("[%d][%d]:cross(%s),feedback(%f,%f)\n",i,j,(c[i].JudgeCross(&c[j])?"true":"false"),feedback.x,feedback.y);
+				}
+			}
 
 			//遷移処理
 
