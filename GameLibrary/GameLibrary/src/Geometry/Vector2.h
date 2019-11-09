@@ -45,6 +45,7 @@ namespace Geometry{
 		}
 		//変数
 		T_param x,y;
+		static const basic_Vector2D s_zero;//零ベクトル
 	};
 
 	//普段使いするベクトルの明示(実装し終わっていない関数はVector2.cppにて実装する)

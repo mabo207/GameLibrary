@@ -1,6 +1,8 @@
 #include"Vector2.h"
 
 //floatによるベクトル表現の実装(Vector2)
+const Geometry::Vector2 Geometry::Vector2::s_zero=Geometry::Vector2(0.0f,0.0f);
+
 float Geometry::Vector2::Size()const{
 	return std::sqrtf(SqSize());
 }
@@ -12,6 +14,8 @@ Geometry::Vector2 Geometry::Vector2::Turn(float radian)const{
 	return Vector2(x*cos-y*sin,x*sin+y*cos);
 }
 //intによるベクトル表現の実装(Vector2Int)
+const Geometry::Vector2Int Geometry::Vector2Int::s_zero=Geometry::Vector2Int(0,0);
+
 double Geometry::Vector2Int::Size()const{
 	return std::sqrt(SqSize());
 }
