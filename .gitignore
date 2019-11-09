@@ -47,10 +47,17 @@ Temporary Items
 .apdisk
 
 #vs temporary files
-/.vs
+.vs
 
 #exclude by lisence
 nonfree
+
+#exclude dxlib files
+DxLib_VC3_21b
+
+#exclude Log
+Log.txt
+
 
 #exclude by file type
 *.tlog
@@ -68,3 +75,4 @@ nonfree
 *.ogg
 *.pch
 *.png
+*.sln
