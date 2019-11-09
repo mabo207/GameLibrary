@@ -40,7 +40,8 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 		Geometry::Vector2 vf1(1.0f,2.0f),vf2(102.3f,32.4f);
 		float f=vf1.CrossSize(vf2);
 		Geometry::Vector2Int vi1(1,3),vi2(32,53);
-		int i=vi1.SqSize();
+		double d=vi1.Size();
+		auto v=Geometry::ConvertToVector2(vi2);
 
 		//ÉQÅ[ÉÄñ{ëÃ
 		while(ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {

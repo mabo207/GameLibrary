@@ -47,38 +47,11 @@ namespace Geometry{
 		T_param x,y;
 	};
 
-	//普段使いするベクトルの明示
+	//普段使いするベクトルの明示(実装し終わっていない関数はVector2.cppにて実装する)
 	using Vector2=basic_Vector2D<float,float>;
 	using Vector2Int=basic_Vector2D<int,double>;
 
-	//floatによるベクトル表現の実装(Vector2)
-	float Vector2::Size()const{
-		return std::sqrtf(SqSize());
-	}
-	float Vector2::GetRadian()const{
-		return std::atan2f(y,x);
-	}
-	Vector2 Vector2::Turn(float radian)const{
-		const float cos=std::cosf(radian),sin=std::sinf(radian);
-		return Vector2(x*cos-y*sin,x*sin+y*cos);
-	}
-	//intによるベクトル表現の実装(Vector2Int)
-	double Vector2Int::Size()const{
-		return std::sqrt(SqSize());
-	}
-	double Vector2Int::GetRadian()const{
-		return std::atan2(y,x);
-	}
-	Vector2Int Vector2Int::Turn(double radian)const{
-		const double cos=std::cos(radian),sin=std::sin(radian);
-		return Vector2Int((int)(x*cos-y*sin),(int)(x*sin+y*cos));
-	}
-
 	//コンバート用関数
-	Vector2 ConvertToVector2(const Vector2Int &intVec){
-		return Vector2((float)intVec.x,(float)intVec.y);
-	}
-	Vector2Int ConverToVector2Int(const Vector2 &vec){
-		return Vector2Int((int)vec.x,(int)vec.y);
-	}
+	Vector2 ConvertToVector2(const Vector2Int &intVec);
+	Vector2Int ConverToVector2Int(const Vector2 &vec);
 }
