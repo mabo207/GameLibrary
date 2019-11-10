@@ -54,5 +54,5 @@ namespace Geometry{
 
 	//コンバート用関数
 	Vector2 ConvertToVector2(const Vector2Int &intVec);
-	Vector2Int ConverToVector2Int(const Vector2 &vec);
+	Vector2Int ConvertToVector2Int(const Vector2 &vec);
 }

@@ -31,6 +31,6 @@ Geometry::Vector2Int Geometry::Vector2Int::Turn(double radian)const{
 Geometry::Vector2 Geometry::ConvertToVector2(const Vector2Int &intVec){
 	return Vector2((float)intVec.x,(float)intVec.y);
 }
-Geometry::Vector2Int Geometry::ConverToVector2Int(const Vector2 &vec){
+Geometry::Vector2Int Geometry::ConvertToVector2Int(const Vector2 &vec){
 	return Vector2Int((int)vec.x,(int)vec.y);
 }
