@@ -79,16 +79,19 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 				player.Move(move);
 			} else{
 				//左マウスボタンを押した時のみ当たり判定処理をしてみる
-				Geometry::Vector2 totalFeedback=Geometry::Vector2::s_zero;
-				const size_t calcCount=25;
-				const float moveRate=1.0f/((float)calcCount);
-				const Geometry::Vector2 miniMove=move*moveRate;
+				//理論上、合計の押し出し割合は(1-(1-feedbackRate)^calcCount)となる
+				const size_t calcCount=25;//計算回数、多いほど計算が正確になり合計押し出し割合が1に近づくが重くなる
+				const float feedbackRate=0.4f;//１回当たりの押し出し割合、大きいほど計算の正確性が低くなる
+				//フィードバック分移動する
 				for(size_t j=0;j<calcCount;j++){
+					Geometry::Vector2 totalFeedback=Geometry::Vector2::s_zero;
 					for(size_t i=0;i<terrainCount;i++){
-						totalFeedback+=c[i].CalculateFeedback(&player,miniMove);
+						totalFeedback+=c[i].CalculateFeedback(&player,move);
 					}
-					player.Move(miniMove+totalFeedback*moveRate);
+					player.Move(totalFeedback*feedbackRate);
 				}
+				//フィードバック分の移動後、move分移動
+				player.Move(move);
 			}
 
 			//遷移処理
