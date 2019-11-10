@@ -4,6 +4,7 @@
 
 #include"Geometry/Vector2.h"
 #include"Geometry/Circle.h"
+#include"Input/Mouse.h"
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 	try{
@@ -26,7 +27,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 		SetMouseDispFlag(TRUE);
 		//DXアーカイバの使用
 		SetUseDXArchiveFlag(TRUE);
-		
+
 		if(ChangeWindowMode(TRUE) != 0) {
 			throw(std::runtime_error("ChangeWindowMode(TRUE) failed."));
 		}
@@ -51,15 +52,32 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 			,Geometry::Circle(Geometry::Vector2(120.0f,200.0f),100.0f)
 			,Geometry::Circle(Geometry::Vector2(950.0f,300.0f),600.0f)
 		};
+
 		//ゲーム本体
 		while(ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
-			//入力情報更新
-
 			//描画
 			clsDx();
 			for(const Geometry::Circle &circle:c){
 				circle.Shape::Draw(GetColor(255,0,0),FALSE,3.0f);
 			}
+			DrawBox(40,40,120,120,GetColor(127,127,127),TRUE);
+			printfDx("mouse:(%f,%f)\n",Input::Mouse::s_mouse.GetPosition().x,Input::Mouse::s_mouse.GetPosition().y);
+			switch(Input::Mouse::s_mouse.GetButtonCondition(MOUSE_INPUT_LEFT)){
+			case(Input::Mouse::ButtonCondition::e_free):
+				printfDx("left free\n");
+				break;
+			case(Input::Mouse::ButtonCondition::e_pushed):
+				printfDx("left pushed\n");
+				break;
+			case(Input::Mouse::ButtonCondition::e_released):
+				printfDx("left released\n");
+				break;
+			}
+			printfDx("right frame:%d\n",Input::Mouse::s_mouse.GetButtonInputFrame(MOUSE_INPUT_RIGHT));
+			printfDx("wheel rot:%d\n",Input::Mouse::s_mouse.GetWheelRotation());
+
+			//入力情報更新
+			Input::Mouse::s_mouse.Update();
 
 			//情報更新
 			for(size_t i=0;i+1<circleCount;i++){
@@ -73,7 +91,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 
 
 			//終了検出
-			
+
 		}
 
 		//素材の解放
