@@ -3,6 +3,7 @@
 #include"DxLib.h"
 
 #include"Geometry/Vector2.h"
+#include"Input/Mouse.h"
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 	try{
@@ -37,19 +38,28 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 			throw(std::runtime_error("SetDrawScreen(DX_SCREEN_BACK) failed."));
 		}
 
-		Geometry::Vector2 vf1(1.0f,2.0f),vf2(102.3f,32.4f);
-		float f=vf1.CrossSize(vf2);
-		Geometry::Vector2Int vi1(1,3),vi2(32,53);
-		double d=vi1.Size();
-		auto v=Geometry::ConvertToVector2(vi2);
-
 		//ゲーム本体
 		while(ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
-			//入力情報更新
-
 			//描画
 			clsDx();
 			DrawBox(40,40,120,120,GetColor(127,127,127),TRUE);
+			printfDx("mouse:(%f,%f)\n",Input::Mouse::s_mouse.GetPosition().x,Input::Mouse::s_mouse.GetPosition().y);
+			switch(Input::Mouse::s_mouse.GetButtonCondition(MOUSE_INPUT_LEFT)){
+			case(Input::Mouse::ButtonCondition::e_free):
+				printfDx("left free\n");
+				break;
+			case(Input::Mouse::ButtonCondition::e_pushed):
+				printfDx("left pushed\n");
+				break;
+			case(Input::Mouse::ButtonCondition::e_released):
+				printfDx("left released\n");
+				break;
+			}
+			printfDx("right frame:%d\n",Input::Mouse::s_mouse.GetButtonInputFrame(MOUSE_INPUT_RIGHT));
+			printfDx("wheel rot:%d\n",Input::Mouse::s_mouse.GetWheelRotation());
+
+			//入力情報更新
+			Input::Mouse::s_mouse.Update();
 
 			//情報更新
 
