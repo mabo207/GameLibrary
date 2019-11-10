@@ -14,7 +14,7 @@ namespace Geometry{
 		//四則演算
 		basic_Vector2D operator+(const basic_Vector2D &otherobj)const{ return basic_Vector2D(this->x+otherobj.x,this->y+otherobj.y); }
 		void operator+=(const basic_Vector2D &otherobj){ *this=*this+otherobj; }
-		basic_Vector2D operator-(const basic_Vector2D &otherobj)const{ return basic_Vector2D(this->x-otherobj.x,this->y-otherobj.y); }
+		basic_Vector2D operator-(const basic_Vector2D &otherobj)const{ return *this+(-otherobj); }
 		void operator-=(const basic_Vector2D &otherobj){ *this=*this-otherobj; }
 		basic_Vector2D operator*(const T_multiple &rate)const{ return basic_Vector2D(this->x*rate,this->y*rate); }
 		void operator*=(const T_multiple &rate){ *this=*this*rate; }
@@ -23,6 +23,10 @@ namespace Geometry{
 		//比較演算
 		bool operator==(const basic_Vector2D &otherobj)const{ return (this->x==otherobj.x && this->y==otherobj.y); }
 		bool operator!=(const basic_Vector2D &otherobj)const{ return !(*this==otherobj); }
+		//ベクトルを反転
+		basic_Vector2D operator-()const{
+			return basic_Vector2D(-x,-y);
+		}
 		//ベクトル特有の機能
 		T_param Dot(const basic_Vector2D &otherobj)const{
 			//内積
