@@ -16,6 +16,12 @@
     <ClCompile Include="src\Geometry\Vector2.cpp">
       <Filter>src\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="src\Geometry\Edge.cpp">
+      <Filter>src\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Geometry\Params.cpp">
+      <Filter>src\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Geometry\Circle.h">
@@ -28,6 +34,12 @@
       <Filter>src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="src\Geometry\Vector2.h">
+      <Filter>src\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Geometry\Edge.h">
+      <Filter>src\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Geometry\Params.h">
       <Filter>src\Geometry</Filter>
     </ClInclude>
   </ItemGroup>

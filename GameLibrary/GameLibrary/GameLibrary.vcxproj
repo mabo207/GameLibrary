@@ -124,6 +124,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Geometry\Circle.cpp" />
+    <ClCompile Include="src\Geometry\Edge.cpp" />
+    <ClCompile Include="src\Geometry\Params.cpp" />
     <ClCompile Include="src\Geometry\Shape.cpp" />
     <ClCompile Include="src\Geometry\Vector2.cpp" />
     <ClCompile Include="src\Input\Mouse.cpp" />
@@ -131,6 +133,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Geometry\Circle.h" />
+    <ClInclude Include="src\Geometry\Edge.h" />
+    <ClInclude Include="src\Geometry\Params.h" />
     <ClInclude Include="src\Geometry\Shape.h" />
     <ClInclude Include="src\Geometry\Vector2.h" />
     <ClInclude Include="src\Input\Mouse.h" />

@@ -30,7 +30,7 @@ namespace Geometry{
 		//ベクトル特有の機能
 		T_param Dot(const basic_Vector2D &otherobj)const{
 			//内積
-			return this->x*otherobj.x+this->y*otherobj*y;
+			return this->x*otherobj.x+this->y*otherobj.y;
 		}
 		T_param CrossSize(const basic_Vector2D &otherobj)const{
 			//外積の大きさ：2ベクトルによって構成される平行四辺形の面積
