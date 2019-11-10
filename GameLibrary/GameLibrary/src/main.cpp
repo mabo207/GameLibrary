@@ -39,51 +39,55 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 			throw(std::runtime_error("SetDrawScreen(DX_SCREEN_BACK) failed."));
 		}
 
-		Geometry::Vector2 vf1(1.0f,2.0f),vf2(102.3f,32.4f);
-		float f=vf1.CrossSize(vf2);
-		Geometry::Vector2Int vi1(1,3),vi2(32,53);
-		double d=vi1.Size();
-		auto v=Geometry::ConvertToVector2(vi2);
-		const size_t circleCount=5;
-		const Geometry::Circle c[circleCount]={
-			Geometry::Circle(Geometry::Vector2(30.0f,30.0f),20.0f)
-			,Geometry::Circle(Geometry::Vector2(49.0f,30.0f),20.0f)
-			,Geometry::Circle(Geometry::Vector2(35.0f,65.0f),20.0f)
-			,Geometry::Circle(Geometry::Vector2(120.0f,200.0f),100.0f)
-			,Geometry::Circle(Geometry::Vector2(950.0f,300.0f),600.0f)
+		Geometry::Circle player(Geometry::Vector2::s_zero,30.0f);
+		Geometry::Circle virtualPlayer=player;
+		const size_t terrainCount=5;
+		const Geometry::Circle c[terrainCount]={
+			Geometry::Circle(Geometry::Vector2(130.0f,30.0f),20.0f)
+			,Geometry::Circle(Geometry::Vector2(149.0f,230.0f),60.0f)
+			,Geometry::Circle(Geometry::Vector2(135.0f,165.0f),70.0f)
+			,Geometry::Circle(Geometry::Vector2(420.0f,300.0f),100.0f)
+			,Geometry::Circle(Geometry::Vector2(750.0f,200.0f),200.0f)
 		};
 
 		//ゲーム本体
 		while(ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
 			//描画
 			clsDx();
+			player.Shape::Draw(GetColor(128,128,255),TRUE,1.0f);
+			virtualPlayer.Shape::Draw(GetColor(64,64,196),FALSE,5.0f);
 			for(const Geometry::Circle &circle:c){
-				circle.Shape::Draw(GetColor(255,0,0),FALSE,3.0f);
+				unsigned int color;
+				if(virtualPlayer.JudgeCross(&circle)){
+					color=GetColor(255,0,0);
+				} else{
+					color=GetColor(255,255,0);
+				}
+				circle.Shape::Draw(color,FALSE,3.0f);
 			}
-			DrawBox(40,40,120,120,GetColor(127,127,127),TRUE);
-			printfDx("mouse:(%f,%f)\n",Input::Mouse::s_mouse.GetPosition().x,Input::Mouse::s_mouse.GetPosition().y);
-			switch(Input::Mouse::s_mouse.GetButtonCondition(MOUSE_INPUT_LEFT)){
-			case(Input::Mouse::ButtonCondition::e_free):
-				printfDx("left free\n");
-				break;
-			case(Input::Mouse::ButtonCondition::e_pushed):
-				printfDx("left pushed\n");
-				break;
-			case(Input::Mouse::ButtonCondition::e_released):
-				printfDx("left released\n");
-				break;
-			}
-			printfDx("right frame:%d\n",Input::Mouse::s_mouse.GetButtonInputFrame(MOUSE_INPUT_RIGHT));
-			printfDx("wheel rot:%d\n",Input::Mouse::s_mouse.GetWheelRotation());
 
 			//入力情報更新
 			Input::Mouse::s_mouse.Update();
 
 			//情報更新
-			for(size_t i=0;i+1<circleCount;i++){
-				for(size_t j=i+1;j<circleCount;j++){
-					Geometry::Vector2 feedback=c[i].CalculateFeedback(&c[j],Geometry::Vector2(1.0f,0.0f));
-					printfDx("[%d][%d]:cross(%s),feedback(%f,%f)\n",i,j,(c[i].JudgeCross(&c[j])?"true":"false"),feedback.x,feedback.y);
+			virtualPlayer.Warp(Input::Mouse::s_mouse.GetPosition());
+			Geometry::Vector2 move=Input::Mouse::s_mouse.GetPosition()-player.GetPosition();
+			if(move.SqSize()>25.0f){
+				move=move.MultipleNorm(5.0f);
+			}
+			if(Input::Mouse::s_mouse.GetButtonCondition(MOUSE_INPUT_LEFT)!=Input::Mouse::ButtonCondition::e_pushed){
+				player.Move(move);
+			} else{
+				//左マウスボタンを押した時のみ当たり判定処理をしてみる
+				Geometry::Vector2 totalFeedback=Geometry::Vector2::s_zero;
+				const size_t calcCount=25;
+				const float moveRate=1.0f/((float)calcCount);
+				const Geometry::Vector2 miniMove=move*moveRate;
+				for(size_t j=0;j<calcCount;j++){
+					for(size_t i=0;i<terrainCount;i++){
+						totalFeedback+=c[i].CalculateFeedback(&player,miniMove);
+					}
+					player.Move(miniMove+totalFeedback*moveRate);
 				}
 			}
 
