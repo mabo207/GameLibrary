@@ -69,8 +69,7 @@ Geometry::Vector2 Geometry::Edge::CalculateFeedback(const Shape *moveShape,const
 					}
 					//‚’¼•ûŒü‚ÌƒxƒNƒgƒ‹‚ð‹‚ß‚é
 					const Vector2 slantFeedback=crossInfo.second-onLinePoint;//‚±‚ê‚Ìthis‚É‚’¼‚È¬•ª‚ð‹‚ß‚ê‚Î‚æ‚¢
-					const Vector2 verticalVec(this->m_vec.y,this->m_vec.x);//‚’¼¬•ª
-					return verticalVec*(this->m_vec.CrossSize(slantFeedback)/this->m_vec.CrossSize(verticalVec));
+					return slantFeedback.VerticalComponent(this->m_vec);
 				}
 			}
 		} else if(kind==Kind::e_polygon){

@@ -6,7 +6,7 @@ namespace Geometry{
 	//2次元ベクトルを実現するクラス
 	template <class T_param,class T_multiple> struct basic_Vector2D{
 		//T_param:パラメータの型
-		//T_multiple:掛け算する時の型
+		//T_multiple:掛け算する時の型(T_paramからキャストが可能であることを要求)
 	public:
 		//関数
 		basic_Vector2D(T_param i_x,T_param i_y):x(i_x),y(i_y){}
@@ -46,6 +46,16 @@ namespace Geometry{
 		basic_Vector2D MultipleNorm(T_multiple length)const{
 			//lengthの長さの傾きが同じベクトルを返す
 			return *this*(length/Size());
+		}
+		basic_Vector2D VerticalComponent(const basic_Vector2D &base)const{
+			if(base!=s_zero){
+				//thisをbaseの定数倍とその垂直成分に分割したとして、その垂直成分を返す
+				const basic_Vector2D verticalVec(-base.y,base.x);
+				//面積比（外積比）を用いて成分を返す
+				return verticalVec*(base.CrossSize(*this)/base.CrossSize(verticalVec));
+			} else{
+				return s_zero;
+			}
 		}
 		//変数
 		T_param x,y;
