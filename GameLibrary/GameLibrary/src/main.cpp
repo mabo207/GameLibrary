@@ -42,7 +42,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 
 		std::shared_ptr<Geometry::Shape> player(new Geometry::Edge(Geometry::Vector2::s_zero,Geometry::Vector2(30.0f,40.0f)));
 		std::shared_ptr<Geometry::Shape> virtualPlayer=player->Copy();
-		const size_t terrainCount=9;
+		const size_t terrainCount=10;
 		const std::array<std::shared_ptr<Geometry::Shape>,terrainCount> shapeList={
 			std::shared_ptr<Geometry::Shape>(new Geometry::Circle(Geometry::Vector2(130.0f,30.0f),20.0f))
 			,std::shared_ptr<Geometry::Shape>(new Geometry::Circle(Geometry::Vector2(149.0f,230.0f),60.0f))
@@ -53,6 +53,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Vector2(820.0f,80.0f),Geometry::Vector2(-190.0f,10.0f)*3.0f))
 			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Vector2(530.0f,280.0f),Geometry::Vector2(60.0f,-140.0f)*3.0f))
 			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Vector2(320.0f,500.0f),Geometry::Vector2(-100.0f,40.0f)*3.0f))
+			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Vector2(540.0f,420.0f),Geometry::Vector2(90.0f,120.0f)*3.0f))
 		};
 
 		//ÉQÅ[ÉÄñ{ëÃ
