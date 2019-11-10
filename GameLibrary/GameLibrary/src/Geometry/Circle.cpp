@@ -29,7 +29,7 @@ bool Geometry::Circle::JudgeCross(const Shape *otherShape)const{
 
 		} else if(kind==Kind::e_polygon){
 			//円と多角形の交差判定
-
+			return otherShape->JudgeCross(this);
 		}
 	}
 	return false;
@@ -45,7 +45,7 @@ bool Geometry::Circle::JudgeInThis(const Shape *otherShape)const{
 				//L<=|this->m_r-pCircle->m_r|であれば交差、そうでない場合は非交差
 				const float sqL=(this->m_position-pCircle->m_position).SqSize();
 				const float sub=this->m_r-pCircle->m_r;
-				return (sqL<=sub*sub);
+				return (sqL<=sub*sub) && (sub>0.0f);
 			}
 		} else if(kind==Kind::e_edge){
 			//円と線分の包括判定
@@ -105,7 +105,7 @@ Geometry::Vector2 Geometry::Circle::CalculateFeedback(const Shape *moveShape,con
 
 		} else if(kind==Kind::e_polygon){
 			//円と多角形の交差判定
-
+			return -moveShape->CalculateFeedback(this,-moveVec);//処理を移譲、移動の向きとフィードバックの向きを逆にする事に注意
 		}
 	}
 	return Vector2::s_zero;
