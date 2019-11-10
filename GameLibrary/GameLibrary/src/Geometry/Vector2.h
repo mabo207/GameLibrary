@@ -44,8 +44,12 @@ namespace Geometry{
 		T_multiple GetRadian()const;//Šp“x‚ð•Ô‚·
 		basic_Vector2D Turn(T_multiple radian)const;//‰ñ“]‚³‚¹‚é
 		basic_Vector2D MultipleNorm(T_multiple length)const{
-			//length‚Ì’·‚³‚ÌŒX‚«‚ª“¯‚¶ƒxƒNƒgƒ‹‚ð•Ô‚·
-			return *this*(length/Size());
+			if(*this!=s_zero){
+				//length‚Ì’·‚³‚ÌŒX‚«‚ª“¯‚¶ƒxƒNƒgƒ‹‚ð•Ô‚·
+				return *this*(length/Size());
+			} else{
+				return s_zero;
+			}
 		}
 		basic_Vector2D VerticalComponent(const basic_Vector2D &base)const{
 			if(base!=s_zero){

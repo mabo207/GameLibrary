@@ -72,11 +72,26 @@ Geometry::Vector2 Geometry::Edge::CalculateFeedback(const Shape *moveShape,const
 				{
 					//跨いだ場合、afterMoveEdgeを垂直に動かして跨がない状態にするためのフィードバックを返す
 					//移動後の2点のどちらが、beforeVertical方向から離れているかを判定して、それに対応したvertical成分を逆向きにして返してあげる
+					Vector2 feedback=Vector2::s_zero;
 					if(beforeVertical.Dot(afterBeginVertical)<beforeVertical.Dot(afterEndVertical)){
-						return -afterBeginVertical;
+						feedback=-afterBeginVertical;
 					} else{
-						return -afterEndVertical;
+						feedback=-afterEndVertical;
 					}
+					Vector2 extra=Vector2::s_zero;
+					const float extraSize=0.5f;
+					if(feedback.x>0.0f){
+						extra.x=extraSize;
+					} else if(feedback.x<0.0f){
+						extra.x=-extraSize;
+					}
+					if(feedback.y>0.0f){
+						extra.y=extraSize;
+					} else if(feedback.y<0.0f){
+						extra.y=-extraSize;
+					}
+					return feedback+extra;//feedbackの各成分の絶対値を1だけ大きくするように押出し(余分な押出しで平行線分の通過を防ぐ)
+//					return -(feedback+feedback.MultipleNorm(1.0f));//feedbackに依存しない距離だけ余分に押し出す事でthisとpEdgeが平行に近い時に通過する事を防ぐ(しかし計算が遅くなる)
 				}
 			}
 		} else if(kind==Kind::e_polygon){
