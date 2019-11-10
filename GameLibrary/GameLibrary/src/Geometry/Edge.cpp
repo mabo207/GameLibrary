@@ -53,24 +53,50 @@ Geometry::Vector2 Geometry::Edge::CalculateFeedback(const Shape *moveShape,const
 			const Edge *pEdge=dynamic_cast<const Edge *>(moveShape);
 			if(pEdge!=nullptr){
 				//this上のpEdgeへの最近傍点を求める
-				Edge copiedEdge=*pEdge;
-				copiedEdge.Move(moveVec);
-				const std::pair<bool,Vector2> crossInfo=CalculateCrossPoint(copiedEdge);
-				if(crossInfo.first){
-					//交点が存在している時のみ、押し出し距離を計算する
-					//線分上に乗せたい点がどちらか計算
-					Vector2 onLinePoint=Vector2::s_zero;
-					if(this->m_vec.Dot(moveVec)>0.0f){
-						//moveVecとcopiedEdgeの向きが同じ場合、copiedEdge.GetEndPoint()をthis上に乗せるようにする
-						onLinePoint=copiedEdge.GetEndPoint();
+				Edge afterMoveEdge=*pEdge;
+				afterMoveEdge.Move(moveVec);
+				//pEdgeが移動によってthisを跨いだかを判定する
+				const float cross[4]={
+					this->m_vec.CrossSize(pEdge->GetPosition()-this->m_position)
+					,this->m_vec.CrossSize(pEdge->GetEndPoint()-this->m_position)
+					,this->m_vec.CrossSize(afterMoveEdge.GetPosition()-this->m_position)
+					,this->m_vec.CrossSize(afterMoveEdge.GetPosition()-this->m_position)
+				};
+				if((cross[0]>=0.0f && cross[1]>=0.0f && cross[2]>=0.0f && cross[3]>=0.0f)
+					|| (cross[0]<0.0f && cross[1]<0.0f && cross[2]<0.0f && cross[3]<0.0f))
+				{
+					//跨いでいない場合(cross[i]の符号がすべて同じ)
+					return Vector2::s_zero;
+				} else{
+					//跨いだ場合、afterMoveEdgeを垂直に動かして跨がない状態にするためのフィードバックを返す
+					//moveVecのthis->m_vecの垂直方向成分
+					const Geometry::Vector2 moveVecVertical=moveVec.VerticalComponent(this->m_vec);
+					//移動後の2点について、this上の垂線の足からその点に伸ばしたベクトル
+					const Geometry::Vector2 afterBeginVertical=(afterMoveEdge.GetPosition()-this->m_position).VerticalComponent(this->m_vec)
+						,afterEndVertical=(afterMoveEdge.GetEndPoint()-this->m_position).VerticalComponent(this->m_vec);
+					//移動後の2点のどちらがが、moveVecVerticalに進んでいるかを判定して、それに対応したvertical成分を逆向きにして返してあげる
+					if(moveVecVertical.Dot(afterBeginVertical)>moveVecVertical.Dot(afterEndVertical)){
+						return -afterBeginVertical;
 					} else{
-						//向きが逆なら、copiedEdge.m_positionをthis上に乗せようとする
-						onLinePoint=copiedEdge.GetPosition();
+						return -afterEndVertical;
 					}
-					//垂直方向のベクトルを求める
-					const Vector2 slantFeedback=crossInfo.second-onLinePoint;//これのthisに垂直な成分を求めればよい
-					return slantFeedback.VerticalComponent(this->m_vec);
 				}
+				//const std::pair<bool,Vector2> crossInfo=CalculateCrossPoint(afterMoveEdge);
+				//if(crossInfo.first){
+				//	//交点が存在している時のみ、押し出し距離を計算する
+				//	//線分上に乗せたい点がどちらか計算
+				//	Vector2 onLinePoint=Vector2::s_zero;
+				//	if(this->m_vec.Dot(moveVec)>0.0f){
+				//		//moveVecとafterMoveEdgeの向きが同じ場合、afterMoveEdge.GetEndPoint()をthis上に乗せるようにする
+				//		onLinePoint=afterMoveEdge.GetEndPoint();
+				//	} else{
+				//		//向きが逆なら、afterMoveEdge.m_positionをthis上に乗せようとする
+				//		onLinePoint=afterMoveEdge.GetPosition();
+				//	}
+				//	//垂直方向のベクトルを求める
+				//	const Vector2 slantFeedback=crossInfo.second-onLinePoint;//これのthisに垂直な成分を求めればよい
+				//	return slantFeedback.VerticalComponent(this->m_vec);
+				//}
 			}
 		} else if(kind==Kind::e_polygon){
 			//線分と多角形

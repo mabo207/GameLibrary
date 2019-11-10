@@ -49,10 +49,10 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 			,std::shared_ptr<Geometry::Shape>(new Geometry::Circle(Geometry::Vector2(135.0f,165.0f),70.0f))
 			,std::shared_ptr<Geometry::Shape>(new Geometry::Circle(Geometry::Vector2(420.0f,300.0f),100.0f))
 			,std::shared_ptr<Geometry::Shape>(new Geometry::Circle(Geometry::Vector2(750.0f,200.0f),200.0f))
-			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Edge::CreateWith2Point(Geometry::Vector2(20.0f,480.0f),Geometry::Vector2(180.0f,440.0f))))
-			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Edge::CreateWith2Point(Geometry::Vector2(820.0f,80.0f),Geometry::Vector2(630.0f,90.0f))))
-			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Edge::CreateWith2Point(Geometry::Vector2(530.0f,280.0f),Geometry::Vector2(590.0f,140.0f))))
-			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Edge::CreateWith2Point(Geometry::Vector2(320.0f,500.0f),Geometry::Vector2(220.0f,460.0f))))
+			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Vector2(20.0f,480.0f),Geometry::Vector2(160.0f,-40.0f)*3.0f))
+			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Vector2(820.0f,80.0f),Geometry::Vector2(-190.0f,10.0f)*3.0f))
+			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Vector2(530.0f,280.0f),Geometry::Vector2(60.0f,-140.0f)*3.0f))
+			,std::shared_ptr<Geometry::Shape>(new Geometry::Edge(Geometry::Vector2(320.0f,500.0f),Geometry::Vector2(-100.0f,40.0f)*3.0f))
 		};
 
 		//ゲーム本体
@@ -70,10 +70,10 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 				}
 				shape->Draw(color,FALSE,3.0f);
 				//垂直成分を描画してみる
-				Geometry::Vector2 vertical=(Input::Mouse::s_mouse.GetPosition()-shape->GetPosition()).VerticalComponent(shape->GetResizeBaseVector());
-				Geometry::Vector2 p1=shape->GetPosition();
-				Geometry::Vector2 p2=p1+vertical;
-				DrawLineAA(p1.x,p1.y,p2.x,p2.y,GetColor(128,128,255),2.0f);
+//				Geometry::Vector2 vertical=(Input::Mouse::s_mouse.GetPosition()-shape->GetPosition()).VerticalComponent(shape->GetResizeBaseVector());
+//				Geometry::Vector2 p1=shape->GetPosition();
+//				Geometry::Vector2 p2=p1+vertical;
+//				DrawLineAA(p1.x,p1.y,p2.x,p2.y,GetColor(128,128,255),2.0f);
 			}
 
 			//入力情報更新
